@@ -41,57 +41,6 @@ def data_to_csv(data)
   end
 end
 
-def output_entries(entries)
-  entries.each_with_index do |entry,i| # l2v.class => Array
-    puts " "*3 + "entries:" + i.to_s
-    entry.each_pair do |l4k,l4v| # entry.class => Hash
-      if l4v.class != Hash
-        puts " "*4 + l4k + ":" + l4v.to_s
-      else
-        puts " "*4 + l4k + ":"
-        l4v.each_pair do |l5k,l5v|
-          if l5v.class == Hash
-            l5v.each_pair do |l6k,l6v|
-              puts " "*5 + l6k + ":" + l6v.to_s
-            end
-          elsif l5v.class == Array
-            l5v.each_with_index do |l6v,i6|
-              if l6v.class == Hash
-                puts " "*5 + l5k + ":" + i6.to_s
-                l6v.each_pair do |l7k,l7v|
-                  puts " "*6 + l7k + ":" + l7v.to_s
-                end
-              else
-                puts " "*5 + l5k + ":" + i6.to_s + ":" + l6v.to_s
-              end
-            end
-          else
-            puts " "*5 + l5k + ":" + l5v.to_s
-          end
-        end
-      end
-    end
-  end
-end
-
-def output_json_text(json)
-  json.each_pair do |l1k,l1v|
-    puts l1k + ":" + "#{l1v.length}"
-    l1v.each_pair do |l2k,l2v| # l1v.class => Hash
-      puts " " + l2k + ":" + "#{l2v.length}"
-      if l2v.class == Hash
-        l2v.each_pair do |l3k,l3v|
-          puts " "*2 + l3k + ":" + l3v.to_s
-        end
-      elsif l2v.class == Array # entries
-        output_entries l2v
-      else
-        puts " "*2 + l2k + ":" + l2v.to_s
-      end
-    end
-  end
-end
-
 def output_json_csv(json)
   json.each_pair do |l1k,l1v|
     puts l1k + ":"
