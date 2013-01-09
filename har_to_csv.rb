@@ -3,28 +3,10 @@ raise Exception, 'you must provide a json file' unless ARGV[0]
 
 SEP = "\t"
 ENTRY_FORMAT = ["request", "response", "timings", "startedDateTime", "time"]
-
 REQUEST_FORMAT = ["method", "url", "httpVersion", "queryString", "headersSize", "bodySize"]
-
-RESPONSE_FORMAT = [ "status",
-                    "statusText",
-                    "httpVersion",
-                    "content",
-                    "redirectURL",
-                    "headersSize",
-                    "bodySize"]
-
-CONTENT_FORMAT = [ "size",
-                   "mimeType",
-                   "compression"]
-
-TIMING_FORMAT = [ "blocked",
-                  "dns",
-                  "connect",
-                  "send",
-                  "wait",
-                  "receive",
-                  "ssl"]
+RESPONSE_FORMAT = [ "status", "statusText", "httpVersion", "content", "redirectURL", "headersSize", "bodySize"]
+CONTENT_FORMAT = [ "size", "mimeType", "compression"]
+TIMING_FORMAT = [ "blocked", "dns", "connect", "send", "wait", "receive", "ssl"]
 
 =begin
 entries structure
@@ -86,9 +68,9 @@ Array
 =end
 
 def pages_to_csv(pages)
+  # header
   header = []
   header << ""
-  # header
   pages.first.each_pair do |k,v|
     if v.class != Hash
       header << k.to_s
@@ -100,6 +82,7 @@ def pages_to_csv(pages)
   end
   puts header.join(SEP)
 
+  # data
   pages.each_with_index do |page,i|
     csv = []
     csv << (i+1).to_s
@@ -114,7 +97,6 @@ def pages_to_csv(pages)
     end
     puts csv.join(SEP)
   end
-
 end
 
 def entries_header_to_csv
