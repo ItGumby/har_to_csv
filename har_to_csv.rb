@@ -85,10 +85,41 @@ Array
    }
 =end
 
-def header_to_csv(data)
+def pages_to_csv(pages)
   header = []
   header << ""
-  h = data.first
+  # header
+  pages.first.each_pair do |k,v|
+    if v.class != Hash
+      header << k.to_s
+    else
+      v.each_pair do |k2,v2|
+        header << k2.to_s
+      end
+    end
+  end
+  puts header.join(SEP)
+
+  pages.each_with_index do |page,i|
+    csv = []
+    csv << (i+1).to_s
+    page.each_pair do |k,v|
+      if v.class != Hash
+        csv << v.to_s
+      else
+        v.each_pair do |k2,v2|
+          csv << v2.to_s
+        end
+      end
+    end
+    puts csv.join(SEP)
+  end
+
+end
+
+def entries_header_to_csv
+  header = []
+  header << ""
   # request
   REQUEST_FORMAT.each do |k|
     header << k.to_s
@@ -110,7 +141,7 @@ def header_to_csv(data)
   puts header.join(SEP)
 end
 
-def data_to_csv(data)
+def entries_data_to_csv(data)
   data.each_with_index do |entry,i| # data.class => Array
     csv = []
     csv << (i+1).to_s
@@ -152,10 +183,10 @@ def output_json_csv(json)
         end
       elsif l2v.class == Array # pages,entries
         if l2k == 'entries'
-          header_to_csv(l2v)
-          data_to_csv(l2v)
-        else
-
+          entries_header_to_csv
+          entries_data_to_csv(l2v)
+        elsif l2k == 'pages'
+          pages_to_csv(l2v)
         end
       else
         puts " "*2 + l2k + ":" + l2v.to_s
