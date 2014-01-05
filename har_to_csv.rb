@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'json'
 raise Exception, 'you must provide a json file' unless ARGV[0]
 
